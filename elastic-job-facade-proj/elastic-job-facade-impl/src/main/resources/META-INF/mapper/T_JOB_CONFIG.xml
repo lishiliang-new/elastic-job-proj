@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.lishiliang.mapper">
+
+    <resultMap id="jobConfigBaseResultMap" type="com.lishiliang.model.JobConfigVO">
+        <id property="id" column="ID" />
+        <result property="jobCode" column="JOB_CODE" />
+        <result property="jobName" column="JOB_NAME" />
+        <result property="businessSource" column="business_source" />
+        <result property="cron" column="CRON" />
+        <result property="shardTotalCount" column="SHARD_TOTAL_COUNT" />
+        <result property="shardingItemParameters" column="SHARDING_ITEM_PARAMETERS" />
+        <result property="jobParameter" column="JOB_PARAMETER" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="enable" column="ENABLE" />
+        <result property="profiles" column="PROFILES" />
+        <result property="deleteFlag" column="DELETE_FLAG" />
+        <result property="extraParameter" column="EXTRA_PARAMETER" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="updateTime" column="UPDATE_TIME" />
+        <result property="createOper" column="CREATE_OPER" />
+        <result property="updateOper" column="UPDATE_OPER" />
+
+        <result property="jobCycle" column="JOB_CYCLE" />
+        <result property="jobPeriod" column="JOB_PERIOD" />
+        <result property="jobCanSubscribe" column="JOB_CAN_SUBSCRIBE" />
+        <result property="jobOrgNo" column="JOB_ORG_NO" />
+        <result property="jobDependences" column="JOB_DEPENDENCES" />
+        <result property="jobFirstDate" column="JOB_FIRST_DATE" />
+        <result property="jobFirstTime" column="JOB_FIRST_TIME" />
+    </resultMap>
+
+    <sql id="jobConfigColumnSql">
+        ID, JOB_CODE , JOB_NAME, BUSINESS_SOURCE ,CRON , SHARD_TOTAL_COUNT , SHARDING_ITEM_PARAMETERS , JOB_PARAMETER , DESCRIPTION , EXTRA_PARAMETER ,ENABLE , PROFILES, DELETE_FLAG , CREATE_TIME , UPDATE_TIME , CREATE_OPER , UPDATE_OPER,
+         JOB_CYCLE,JOB_PERIOD,JOB_CAN_SUBSCRIBE,JOB_ORG_NO,JOB_DEPENDENCES,JOB_FIRST_DATE,JOB_FIRST_TIME
+    </sql>
+
+
+    <select id="queryJobConfig" resultMap="jobConfigBaseResultMap" parameterType="com.lishiliang.model.JobConfigDO">
+        select  <include refid="jobConfigColumnSql"/>  from db_manage.t_job_config
+        <where>
+            <if test="id != null and id != '' ">
+                and ID = #{id}
+            </if>
+            <if test="jobCode != null and jobCode != '' ">
+                and JOB_CODE like CONCAT(CONCAT('%', #{jobCode}),'%')
+            </if>
+            <if test="jobParameter != null and jobParameter != '' ">
+                and JOB_PARAMETER like CONCAT(CONCAT('%', #{jobParameter}),'%')
+            </if>
+            <if test="description != null and description != '' ">
+                and DESCRIPTION like CONCAT(CONCAT('%', #{description}),'%')
+            </if>
+            <if test="jobName != null and jobName != '' ">
+                and JOB_NAME like CONCAT(CONCAT('%', #{jobName}),'%')
+            </if>
+            <if test="profiles != null and profiles != '' ">
+                and PROFILES = #{profiles}
+            </if>
+            <if test="businessSource != null and businessSource != '' ">
+                and BUSINESS_SOURCE = #{businessSource}
+            </if>
+            <if test="enable != null  ">
+                and ENABLE = #{enable}
+            </if>
+            <if test="deleteFlag != null  ">
+                and DELETE_FLAG = #{deleteFlag}
+            </if>
+        </where>
+        ORDER BY ID DESC
+    </select>
+
+</mapper>

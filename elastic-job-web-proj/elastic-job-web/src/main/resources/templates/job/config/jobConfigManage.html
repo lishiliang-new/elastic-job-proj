@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>job基础信息配置</title>
+
+    <script type="text/javascript" src="/js/common/common.js"></script>
+    <script type="text/javascript" src="/js/common/city.min.js"></script>
+    <script type="text/javascript" src="/js/layui/layui.js"></script>
+
+    <link rel="stylesheet" href="/js/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/home.css" media="all">
+    <link rel="stylesheet" href="/css/formSelects-v4.css" media="all">
+</head>
+
+<body class="body">
+<div>
+
+    <form class="layui-form" action="" style="margin-top: 30px">
+        <blockquote class="layui-elem-quote quoteBox">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 100px">任务编码：</label>
+                    <div class="layui-input-inline" style="width: 250px">
+                        <input type="text" id="jobCode" name="jobCode" required lay-verify="required"
+                               placeholder=" 请填写任务编码"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 100px">任务名称：</label>
+                    <div class="layui-input-inline" style="width: 250px">
+                        <input type="text" id="jobName" name="jobName" required lay-verify="required"
+                               placeholder=" 任务名称"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 100px">job参数：</label>
+                    <div class="layui-input-inline" style="width: 250px">
+                        <input type="text" id="jobParameter" name="jobParameter" required lay-verify="required"
+                               placeholder=" 请填写job参数"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 100px">启用禁用：</label>
+                    <div class="layui-input-inline" style="width: 250px">
+                        <select id="enable" lay-verify="required">
+                            <option value="">全部</option>
+                            <option value="0">禁用</option>
+                            <option value="1">启用</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 100px">业务来源：</label>
+                    <div class="layui-input-inline" style="width: 250px">
+                        <select id="businessSource" lay-verify="required">
+                            <option value="">全部</option>
+                            <option value="kettle_job">kettle_job</option>
+                            <!--                            <option value="regist_kettle_job">regist_kettle_job</option>-->
+                            <option value="report_job">report_job</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-block">
+                        <a class="layui-btn layui-btn-normal layui-btn-radius" id="queryBtn">查询</a>
+                        <button type="reset" class="layui-btn layui-btn-warm layui-btn-radius">重置</button>
+                        <button type="button" class="layui-btn layui-btn-radius" id="addJobBtn">添加</button>
+                    </div>
+                </div>
+            </div>
+        </blockquote>
+    </form>
+</div>
+
+<!--添加页面-->
+<div id="add-main" style="display: none;">
+    <form class="layui-form" style="margin-top: 20px" id="add-form">
+
+        <!--JOBCODE-->
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>任务编码：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="addJobCode" name="addJobCode" required lay-verify="required"
+                       placeholder=" 请输入任务编码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>cron表达式：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="addCron" name="addCron" required lay-verify="required"
+                       placeholder=" 请填写cron表达式 " autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>任务名称：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="addJobName" name="addJobName" required lay-verify="required"
+                       placeholder=" 请填写任务名称 " autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">任务描述：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="addDescription" name="addDescription" required
+                       placeholder=" 请填写任务描述 " autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>启用禁用：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <select id="addEnable" lay-verify="required" >
+                    <option value=""></option>
+                    <option value="0">禁用</option>
+                    <option value="1">启用</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>运行周期：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <select id="addJobCycle" lay-verify="required" lay-filter="addJobCycleFilter">
+                    <option value=""></option>
+                    <option value="2">日</option>
+                    <option value="1">秒</option>
+                    <option value="3">周</option>
+                    <option value="4">月</option>
+                    <option value="5">季度</option>
+                    <option value="6">年</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>任务运行间隔：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="addJobPeriod" name="addJobPeriod" required lay-verify="required"
+                       placeholder=" 请填写运行间隔(匹配选择的运行周期单位) " autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">首次运行时间：</label>
+            <div class="layui-input-inline" style="width: 300px;">
+                <input type="text" id="addDateTime" placeholder="请输入首次运行时间" autocomplete="off"
+                       class="layui-input" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>是否可订阅：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <select id="addJobCanSubscribe" lay-verify="required" lay-filter="addJobCanSubscribeFilter">
+                    <option value=""></option>
+                    <option value="0">不可订阅</option>
+                    <option value="1">可订阅</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"></span>任务所属机构：</label>
+            <div class="layui-input-inline" style="width: 300px;">
+                <select name="addJobOrgNo" lay-filter="addJobOrgNoFilter" id="addJobOrgNo"
+                        xm-select="addJobOrgNo" multiple lay-search lay-tools xm-select-search=""></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">任务依赖：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="addJobDependences" name="addJobDependences" required
+                       placeholder=" 请填写任务依赖 " autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>业务来源：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <select id="addBusinessSource" lay-verify="required" lay-filter="addBusinessSourceFilter">
+                    <option value=""></option>
+                    <option value="kettle_job">kettle_job</option>
+                    <!--                    <option value="regist_kettle_job">kettle扫描注册任务</option>-->
+                    <option value="report_job">report_job</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item" id = "addKtrFileDiv"  style="display: none;">
+            <div class="layui-inline" >
+                <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>job参数(ktrFile)：</label>
+                <div class="layui-input-inline" style="width: 300px">
+                    <input type="text" id="addKtrFile" name="addKtrFile" lay-event="updateKtrFile"
+                           placeholder=" 请上传ktr脚本" autocomplete="off" class="layui-input" readonly=“true”>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" id = "addUploadDiv"  style="display: none;margin-top: 2px">
+            <div class="layui-inline" >
+                <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"></label>
+                <div class="layui-input-inline" style="width: 300px">
+                    <button type="button" class="layui-btn layui-btn-sm" id="addImportFile" style="width: 120px" value="选择文件">选择文件</button>
+                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="addResetFile" style="width: 120px" value="选择文件">重置文件</button>
+                </div>
+            </div>
+        </div>
+
+        <!--        <div class="layui-form-item" id = "addKtrPushFileNameDiv"  style="display: none;">-->
+        <!--            <div class="layui-inline" >-->
+        <!--                <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>文件输出名：</label>-->
+        <!--                <div class="layui-input-inline" style="width: 300px">-->
+        <!--                    <input type="text" id="addKtrPushFileName" name="addKtrPushFileName"-->
+        <!--                           placeholder=" 请输入文件输出名" autocomplete="off" class="layui-input" >-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+
+        <div class="layui-form-item" id = "addKettleLogLevelDiv" style="display: none;">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>job参数(kettleLogLevel)：</label>
+            <div class="layui-input-inline" style="width: 300px" >
+                <select id="addKettleLogLevel"  required lay-verify="required" >
+                    <option value="Nothing">没有日志</option>
+                    <option value="Error">错误日志</option>
+                    <option value="Minimal">最小日志</option>
+                    <option value="Basic" selected>基本日志</option>
+                    <option value="Detailed">详细日志</option>
+                    <option value="Debug">调试日志</option>
+                    <option value="Rowlevel">行级日志(非常详细)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 78px;margin-top: 50px;">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" id="formSave" lay-submit lay-filter="formSave" lay-event="formSave">保存</button>
+                <button type="reset" id="reset" class="layui-btn ">重置</button>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+<!--详情页面-->
+<div id="detail-main" style="display: none;">
+    <form class="layui-form" style="margin-top: 20px">
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">jobCode：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;" id="detailJobCode"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">描述信息：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div  style="margin-top: 10px;" id="detailDescription"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">cron表达式：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;" id="detailCron"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">job参数：</label>
+            <div class="layui-input-inline" style="width: 450px">
+                <div  style="margin-top: 10px;" id="detailJobParameter"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">业务来源：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;" id="detailBusinessSource"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">分片数：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailShardTotalCount"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">分片作业参数：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailShardingItemParameters"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">启用状态：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailEnable"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">创建时间：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailCreateTime"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">更新时间：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailUpdateTime"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">创建人：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailCreateOper"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">更新人：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailUpdateOper"></div>
+            </div>
+        </div>
+        <br>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">运行状态：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailJobStatus"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">实例数：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <div style="margin-top: 10px;"  id="detailInstanceCount"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">分片信息：</label>
+            <div class="layui-input-inline" style="width: 520px">
+                <div style="margin-top: 10px;"  id="detailShardingInfos"></div>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="margin-left: 78px;margin-top: 50px;">
+            <div class="layui-input-block">
+                <button style="margin-left: 110px;" type="button" id="detailColsed" class="layui-btn ">关闭</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<!--编辑页面-->
+<div id="update-main" style="display: none;">
+    <form class="layui-form" style="margin-top: 20px" id="update-form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>jobCode：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <!--                <div style="margin-top: 10px;" id="updateJobCode"></div>-->
+                <input type="text" id="updateJobCode" name="updateJobCode" required lay-verify="required"
+                       placeholder=" 请填写jobCode" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>cron表达式：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="updateCron" name="updateCron" required lay-verify="required"
+                       placeholder=" 请填写cron表达式" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>任务名称：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="updateJobName" name="updateJobName" required lay-verify="required"
+                       placeholder=" 请填写任务名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">任务描述：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="updateDescription" name="updateDescription" required
+                       placeholder=" 请填写任务描述" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>运行周期：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <select id="updateJobCycle" lay-verify="required" lay-filter="updateJobCycleFilter">
+                    <option value=""></option>
+                    <option value="2">日</option>
+                    <option value="1">秒</option>
+                    <option value="3">周</option>
+                    <option value="4">月</option>
+                    <option value="5">季度</option>
+                    <option value="6">年</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>任务运行间隔：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="updateJobPeriod" name="updateJobPeriod" required lay-verify="required"
+                       placeholder=" 请填写运行间隔(匹配选择的运行周期单位) " autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">首次运行时间：</label>
+            <div class="layui-input-inline" style="width: 300px;">
+                <input type="text" id="updateDateTime" placeholder="请输入首次运行时间" autocomplete="off"
+                       class="layui-input" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>是否可订阅：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <select id="updateJobCanSubscribe" lay-verify="required" lay-filter="updateJobCanSubscribeFilter">
+                    <option value=""></option>
+                    <option value="0">不可订阅</option>
+                    <option value="1">可订阅</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">任务所属机构：</label>
+            <div class="layui-input-inline" style="width: 300px;">
+                <select name="updateJobOrgNo" lay-filter="updateJobOrgNoFilter" id="updateJobOrgNo"
+                        xm-select="updateJobOrgNo" multiple lay-search lay-tools xm-select-search="">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px">任务依赖：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <input type="text" id="updateJobDependences" name="updateJobDependences" required
+                       placeholder=" 请填写任务依赖 " autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>业务来源：</label>
+            <div class="layui-input-inline" style="width: 300px">
+                <select id="updateBusinessSource"  name = "updateBusinessSource" disabled lay-verify="required" lay-filter="updateBusinessSourceFilter">
+                    <option value=""></option>
+                    <option value="kettle_job">kettle任务</option>
+                    <option value="regist_kettle_job">kettle扫描注册任务</option>
+                    <!--                    <option value="subscribe_push_kettle_job">kettle_job订阅推送任务</option>-->
+                    <option value="report_job">report_job</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item" id = "updateKtrFileDiv"  style="display: none;">
+            <div class="layui-inline" >
+                <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>job参数(ktrFile)：</label>
+                <div class="layui-input-inline" style="width: 300px">
+                    <input type="text" id="updateKtrFile" name="updateKtrFile" required lay-verify="required" lay-event="updateKtrFile"
+                           placeholder=" 请上传ktr脚本" autocomplete="off" class="layui-input" readonly=“true”>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item" id = "updateUploadDiv"  style="display: none;margin-top: 2px">
+            <div class="layui-inline" >
+                <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"></label>
+                <div class="layui-input-inline" style="width: 300px">
+                    <button type="button" class="layui-btn layui-btn-sm" id="updateImportFile" style="width: 120px" value="选择文件">选择文件</button>
+                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="updateResetFile" style="width: 120px" value="选择文件">重置文件</button>
+                </div>
+            </div>
+        </div>
+
+        <!--        <div class="layui-form-item" id = "updateKtrPushFileNameDiv"  style="display: none;">-->
+        <!--            <div class="layui-inline" >-->
+        <!--                <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>文件输出名：</label>-->
+        <!--                <div class="layui-input-inline" style="width: 300px">-->
+        <!--                    <input type="text" id="updateKtrPushFileName" name="updateKtrPushFileName"-->
+        <!--                           placeholder=" 请输入文件输出名" autocomplete="off" class="layui-input" >-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <div class="layui-form-item" id = "updateKettleLogLevelDiv" style="display: none;">
+            <label class="layui-form-label " style="font-size:12px;color:#9e9e9e;width: 130px"><span style="color: red">*</span>job参数(kettleLogLevel)：</label>
+            <div class="layui-input-inline" style="width: 300px" >
+                <select id="updateKettleLogLevel"  required lay-verify="required" >
+                    <option value="Nothing">没有日志</option>
+                    <option value="Error">错误日志</option>
+                    <option value="Minimal">最小日志</option>
+                    <option value="Basic">基本日志</option>
+                    <option value="Detailed">详细日志</option>
+                    <option value="Debug">调试日志</option>
+                    <option value="Rowlevel">行级日志(非常详细)</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item" style="margin-left: 78px;margin-top: 50px;">
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn" id="formUpdate" lay-submit lay-filter="formUpdate" lay-event="formUpdate">修改</button>
+                <button type="button" id="scanColsed" class="layui-btn ">关闭</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+<button type="button" class="layui-btn layui-btn-normal" id="batchEnable" style="margin-left: 10px">批量启用</button>
+<button type="button" class="layui-btn layui-btn-warm" id="batchDisable">批量禁用</button>
+
+<table id="job_config_table" lay-filter="job_config_table_filter"></table>
+
+<script type="text/html" id="barBtn">
+
+    {{# if(d.deleteFlag == '1'){ }}
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="update">修改</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="restore">恢复</a>
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="download">下载</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete" >删除</a>
+    {{# } else { }}
+
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="update">修改</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
+
+    {{# if(d.enable == '1'){ }}
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="trigger">触发</a>
+    {{# } else { }}
+    <a class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="disabled">触发</a>
+    {{# } }}
+
+    {{# if(d.enable == '1' && !(d.businessSource.startsWith('regist'))){ }}
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="enable">禁用</a>
+    {{# } else if(d.enable == '1' && (d.businessSource.startsWith('regist'))) { }}
+    <a class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="disabled">禁用</a>
+    {{# } else { }}
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="enable">启用</a>
+    {{# } }}
+
+    {{# if(!d.businessSource.startsWith('regist')){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete" >终止</a>
+    {{# } else { }}
+    <a class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="disabled">终止</a>
+    {{# } }}
+    <a class="layui-btn layui-btn layui-btn-xs" lay-event="download">下载</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="changeEnv">切换环境</a>
+    {{# } }}
+
+
+</script>
+
+<script type="text/javascript">
+    layui.config({
+        base: '/js/layui/'
+    }).extend({
+        formSelects: 'formSelects-v4'
+    });
+</script>
+
+<script type="text/javascript" src="/js/app/job/config/jobConfigManage.js"></script>
+</html>
