@@ -1,6 +1,6 @@
 该项目为elastic-job动态增删任务以及动态带权重负载到不同服务运行的实现
 
-技术栈:dubbo+zookeeper(注册中心)+mybatis+jdbc+elastic-job
+技术栈:dubbo2.7.1+zookeeper3.4.13(注册中心)+mybatis+jdbc+elastic-job
 
 使用
 安装zookeeper
