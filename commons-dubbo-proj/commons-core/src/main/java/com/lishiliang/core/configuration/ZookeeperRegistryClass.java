@@ -4,6 +4,7 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.registry.zookeeper.ZookeeperRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +16,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(ZookeeperRegistry.class)
+@ConditionalOnProperty(prefix = "dubbo.registry", value = "zookeeper.address", matchIfMissing = false)
 public class ZookeeperRegistryClass {
+
     @Bean(name = "zookeeper-registry")
     @ConditionalOnClass(ZookeeperRegistry.class)
     public RegistryConfig zookeeperRegistryConfig(@Value("${dubbo.registry.zookeeper.address}") String zookeeperAddress) {

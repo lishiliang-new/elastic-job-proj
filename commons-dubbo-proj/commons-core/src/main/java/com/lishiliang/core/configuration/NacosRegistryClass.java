@@ -4,6 +4,7 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.registry.nacos.NacosRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +16,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(NacosRegistry.class)
+@ConditionalOnProperty(prefix = "dubbo.registry", value = "nacos.address", matchIfMissing = false)
 public class NacosRegistryClass {
+
     @Bean(name = "nacos-registry")
     @ConditionalOnClass(NacosRegistry.class)
     public RegistryConfig nacosRegistryConfig(@Value("${dubbo.registry.nacos.address}") String nacosAddress) {
