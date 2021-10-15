@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 多注册中心之Zookeeper注册中心配置
+ * 多注册中心之Nacos注册中心配置
  *  可通过
  *  @ComponentScan(excludeFilters={@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = NacosRegistryClass.class)})
  *  设置进行排除
