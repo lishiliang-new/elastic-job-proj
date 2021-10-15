@@ -3,9 +3,13 @@
 技术栈:dubbo2.7.1+zookeeper3.4.13(注册中心)+mybatis+jdbc+elastic-job
 
 使用
+
 安装zookeeper
+
 初始化sql:
+
 CREATE DATABASE db_manage
+
 CREATE TABLE db_manage.`t_job_config` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `job_code` varchar(64) NOT NULL COMMENT '作业名称',
@@ -36,10 +40,11 @@ CREATE TABLE db_manage.`t_job_config` (
   KEY `UPDATE_TIME` (`UPDATE_TIME`) USING BTREE,
   KEY `business_source` (`business_source`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='作业配置信息表';
+
 (后面一部分字段为业务字段)
 
 INSERT INTO `db_manage`.`t_job_config`(`id`, `job_code`, `job_name`, `business_source`, `cron`, `shard_total_count`, `sharding_item_parameters`, `job_parameter`, `description`, `extra_parameter`, `enable`, `profiles`, `delete_flag`, `CREATE_TIME`, `UPDATE_TIME`, `CREATE_OPER`, `UPDATE_OPER`, `job_cycle`, `job_period`, `job_can_subscribe`, `job_org_no`, `job_dependences`, `job_first_date`, `job_first_time`) VALUES (1, 'pos_bigdata', 'bigdata测试', 'elastic_job', '0 0 0/10 * * ?', 3, '0=0,1=1,2=2', 'ktrFile=/home/app/nfsdata/ktr/pos/xxx.ktr;kettleLogLevel=Basic', 'bigdata测试', '', 1, 'dev', 0, '2021-07-14 15:48:44', '2021-09-22 09:59:58', '1000030002', '1000030002', 2, 1, 1, '', '', '20210708', '000000');
 
-启动3个服务
-访问 http://localhost:28080/job/config/index 通过web页面对elastic-job任务进行动态增删改查 
+启动3个服务 访问 http://localhost:28080/job/config/index 通过web页面对elastic-job任务进行动态增删改查 
+
 观察elastic-job-core服务的任务执行
