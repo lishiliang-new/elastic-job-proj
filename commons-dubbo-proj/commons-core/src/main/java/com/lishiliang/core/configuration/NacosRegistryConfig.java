@@ -4,28 +4,29 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.registry.nacos.NacosRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * 多注册中心之Nacos注册中心配置
- *  可通过
- *  @ComponentScan(excludeFilters={@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = NacosRegistryClass.class)})
- *  设置进行排除
  */
 @Configuration
 @ConditionalOnClass(NacosRegistry.class)
-@ConditionalOnProperty(prefix = "dubbo.registry", value = "nacos.address", matchIfMissing = false)
-public class NacosRegistryClass {
+@ConditionalOnExpression("!'${dubbo.registry.nacos.address:}'.equals('')")
+public class NacosRegistryConfig {
 
-    @Bean(name = "nacos-registry")
+    @Bean(name = "nacosRegistry")
     @ConditionalOnClass(NacosRegistry.class)
-    public RegistryConfig nacosRegistryConfig(@Value("${dubbo.registry.nacos.address}") String nacosAddress) {
+    public RegistryConfig nacosRegistry(@Value("${dubbo.registry.nacos.address}") String nacosAddress) {
         RegistryConfig registry = new RegistryConfig();
-        registry.setId("nacos_registry");
+        registry.setId("nacosRegistry");
         registry.setAddress(nacosAddress);
-        registry.setDefault(false);
+        registry.setClient("namingService");
+        //是否注册自己(对外暴露)
+        registry.setRegister(true);
+        registry.setCheck(false);
+//        registry.setDefault(true);
         return registry;
     }
 }

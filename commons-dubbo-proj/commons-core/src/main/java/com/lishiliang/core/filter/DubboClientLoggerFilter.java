@@ -20,23 +20,14 @@ public class DubboClientLoggerFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        //获取当前traceId并放入客户端
+        //  获取上下文的traceId 并初始化到RpcContext 以便服务提供方获取(客户端和服务的共享一个RpcContext)
         RpcContext.getContext().setAttachment(TRACE_ID, Context.getCurrentContextTraceId());
 
         Result result = null;
         Long takeTime = 0L;
         Long startTime = System.currentTimeMillis();
 
-        String traceId = MDC.get(TRACE_ID);
-        if (StringUtils.isNotBlank(traceId)) {
-            RpcContext.getContext().setAttachment(TRACE_ID, traceId);
-        }else {
-
-            traceId = Utils.generateUUIDWithMD5();
-            RpcContext.getContext().setAttachment(TRACE_ID, traceId);
-        }
-
-        logger.info("Invoke RPC service. traceId : {}", traceId);
+        logger.info("Invoke RPC service. traceId : {}", Context.getCurrentContextTraceId());
         try {
             result = invoker.invoke(invocation);
         } finally {

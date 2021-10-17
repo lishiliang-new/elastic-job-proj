@@ -36,19 +36,12 @@ public class DubboLoggerFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-
+        // 获取客服端存入的traceId 初始化到上下文中 (客户端和服务的共享一个RpcContext)
         Context.initInheritableThreadLocal(RpcContext.getContext().getAttachment(TRACE_ID));
 
         Result result = null;
         Long takeTime = 0L;
         Long startTime = System.currentTimeMillis();
-
-        //给日志增加traceId
-        String traceId = RpcContext.getContext().getAttachment(TRACE_ID);
-        if(StringUtils.isBlank(traceId)) {
-            traceId = Utils.generateUUIDWithMD5(); //生成新的TraceId
-        }
-        RpcContext.getContext().setAttachment(TRACE_ID, traceId);
 
         try {
             result = invoker.invoke(invocation);

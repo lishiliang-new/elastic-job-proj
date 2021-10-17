@@ -45,9 +45,6 @@ public class ControllerAspect {
         //向Context 注入 traceId
         final String traceId = Utils.generateUUIDWithMD5();
         Context.initInheritableThreadLocal(traceId);
-        Context.setAttachment("start", System.currentTimeMillis());
-        RpcContext.getContext().set(Context.TRACE_ID, traceId);
-        //ThreadContext.put(Context.TRACE_ID, traceId);
 
         return point.proceed();
 
@@ -65,7 +62,7 @@ public class ControllerAspect {
         
         Builder<Map<String, Object>> builder = Builder.ofDefault(dataModel.getAdditionalData(), HashMap<String, Object>::new)
                 .with(Map::put, Context.TRACE_ID, Context.getCurrentContextTraceId());
-        Context.removeTraceId();
+//        Context.removeTraceId();
         
         return Builder.of(dataModel).with(DataModel::setAdditionalData, builder.build()).build();
     }
